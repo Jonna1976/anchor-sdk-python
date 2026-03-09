@@ -26,7 +26,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://umarise.com"
 Documentation = "https://umarise.com/api-reference"
-Repository = "https://github.com/umarise/python-sdk"
+Repository = "https://github.com/Jonna1976/anchor-sdk-python"
 
 [tool.setuptools]
 license-files = []
