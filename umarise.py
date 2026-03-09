@@ -14,7 +14,7 @@ Usage:
     origin = core.attest("sha256:abc123...")
 
 Requirements: Python 3.8+
-Version: 1.0.0
+Version: 1.1.2
 License: Unlicense
 """
 
@@ -26,7 +26,7 @@ import urllib.request
 import urllib.error
 import urllib.parse
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional\n\n__all__ = ["UmariseCore", "UmariseCoreError", "OriginRecord", "VerifyResult", "ProofResult", "HealthResult", "hash_buffer"]
 
 
 # --- Types ---
@@ -107,10 +107,10 @@ class UmariseCore:
                 return None
             raise
 
-    def verify(self, hash: str) -> Optional[VerifyResult]:
+    def verify(self, hash_value: str) -> Optional[VerifyResult]:
         """Verify a hash against the registry. No API key needed."""
         try:
-            data = self._request("POST", "/v1-core-verify", {"hash": _normalize_hash(hash)})
+            data = self._request("POST", "/v1-core-verify", {"hash": _normalize_hash(hash_value)})
             return VerifyResult(
                 origin_id=data["origin_id"],
                 hash=data["hash"],
@@ -148,16 +148,16 @@ class UmariseCore:
             self._handle_http_error(e)
         return ProofResult(origin_id=origin_id, status="not_found")
 
-    def attest(self, hash: str) -> OriginRecord:
+    def attest(self, hash_value: str) -> OriginRecord:
         """Create an origin attestation. Requires a Partner API key."""
         if not self.api_key:
             raise UmariseCoreError("UNAUTHORIZED", "API key required for attest(). Pass api_key to UmariseCore().", 401)
-        data = self._request("POST", "/v1-core-origins", {"hash": _normalize_hash(hash)}, authenticated=True)
+        data = self._request("POST", "/v1-core-origins", {"hash": _normalize_hash(hash_value)}, authenticated=True)
         return _parse_origin(data)
 
     def _request(self, method, path, body=None, authenticated=False):
         url = f"{self.base_url}{path}"
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": "application/json", "User-Agent": f"umarise-python/{__version__}"}
         if authenticated and self.api_key:
             headers["X-API-Key"] = self.api_key
         data = json.dumps(body).encode() if body else None
