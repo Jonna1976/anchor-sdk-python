@@ -20,7 +20,7 @@ License: Unlicense
 
 from __future__ import annotations
 
-__version__ = "1.1.5"
+__version__ = "1.1.6"
 
 import hashlib
 import json
