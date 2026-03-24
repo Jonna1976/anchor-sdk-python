@@ -28,7 +28,9 @@ import urllib.request
 import urllib.error
 import urllib.parse
 from dataclasses import dataclass
-from typing import Optional\n\n__all__ = ["UmariseCore", "UmariseCoreError", "OriginRecord", "VerifyResult", "ProofResult", "HealthResult", "hash_buffer"]
+from typing import Optional
+
+__all__ = ["UmariseCore", "UmariseCoreError", "OriginRecord", "VerifyResult", "ProofResult", "HealthResult", "hash_buffer"]
 
 
 # --- Types ---
